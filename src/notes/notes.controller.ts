@@ -11,28 +11,28 @@ export class NotesController {
     constructor(private notesService: NotesService) {}
 
     @Get()
-    getNotes(): Note[] {
-     return this.notesService.getNotes();
+    findAll(): Note[] {
+     return this.notesService.findAll();
     }
     
     @Get(':id')
-    getNote(@Param('id') id: number): Note {
-        return this.notesService.getNote(id);
+    findOne(@Param('id') id: string): Note {
+        return this.notesService.findOne(id);
     }
 
     @Post()
-    createNote(@Body() createNoteDto: createNoteDto): Note {
-        return this.notesService.createNote(createNoteDto);
+    create(@Body() createNoteDto: createNoteDto): Note {
+        return this.notesService.create(createNoteDto);
     }
 
     @Put(':id')
-    updateNote(@Param('id') id: number, @Body() updateNoteDto: createNoteDto): Note {
-        return this.notesService.updateNote(id, updateNoteDto);
+    update(@Param('id') id: string, @Body() updateNoteDto: createNoteDto): Note {
+        return this.notesService.update(id, updateNoteDto);
     }
 
     @Delete(':id')
-    deleteNote(@Param('id') id: number): void {
-        this.notesService.deleteNote(id);
+    remove(@Param('id') id: string): void {
+        this.notesService.remove(id);
     }
 
 }

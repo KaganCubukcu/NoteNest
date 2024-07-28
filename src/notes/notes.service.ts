@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { seedNotes } from './seedData/seedNotes';
 
 export interface Note {
-    id: number;
+    id: string;
     title: string;
     content: string;
 }
@@ -10,7 +10,6 @@ export interface Note {
 @Injectable()
 export class NotesService {
     private notes: Note[] = [];
-    private idCounter = 1;
 
     constructor() {
         this.initializeSeedData();
@@ -18,15 +17,15 @@ export class NotesService {
 
     private initializeSeedData(): void {
         seedNotes.forEach((note) => {
-            this.createNote(note);
+            this.create(note);
         });
     }
 
-    getNotes(): Note[] {
-        return this.notes;
+    findAll(): Note[] {
+        return this.notes
     }
 
-    getNote(id: number): Note {
+    findOne(id: string): Note {
         const note = this.notes.find((note) => note.id === id);
         if (!note) {
          throw new NotFoundException('Note not found');
@@ -34,13 +33,13 @@ export class NotesService {
         return note;
      }
 
-    createNote(note: Omit<Note, 'id'>): Note {
-        const newNote = { ...note, id: this.idCounter++ };
+    create(note: Omit<Note, 'id'>): Note {
+        const newNote = { ...note, id: crypto.randomUUID() };
         this.notes.push(newNote);
         return newNote;
     }
 
-    updateNote(id: number, note: Omit<Note, 'id'>): Note {
+    update(id: string, note: Omit<Note, 'id'>): Note {
         const noteIndex = this.notes.findIndex((note) => note.id === id);
         if (noteIndex === -1) {
             throw new Error('Note not found');
@@ -49,7 +48,7 @@ export class NotesService {
         return this.notes[noteIndex];
     }
 
-    deleteNote(id: number): void {
+    remove(id: string): void {
         this.notes = this.notes.filter((note) => note.id !== id);
     }
 
