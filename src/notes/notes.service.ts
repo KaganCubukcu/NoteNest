@@ -1,11 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { seedNotes } from './seedData/seedNotes';
-
-export interface Note {
-    id: string;
-    title: string;
-    content: string;
-}
+import { Note } from './interfaces/note.interface';
 
 @Injectable()
 export class NotesService {
