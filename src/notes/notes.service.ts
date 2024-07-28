@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { seedNotes } from './seedData/seedNotes';
 
 export interface Note {
     id: number;
@@ -11,6 +12,16 @@ export class NotesService {
     private notes: Note[] = [];
     private idCounter = 1;
 
+    constructor() {
+        this.initializeSeedData();
+    }
+
+    private initializeSeedData(): void {
+        seedNotes.forEach((note) => {
+            this.createNote(note);
+        });
+    }
+
     getNotes(): Note[] {
         return this.notes;
     }
@@ -18,7 +29,7 @@ export class NotesService {
     getNote(id: number): Note {
         const note = this.notes.find((note) => note.id === id);
         if (!note) {
-         throw new Error('Note not found');
+         throw new NotFoundException('Note not found');
         }
         return note;
      }
