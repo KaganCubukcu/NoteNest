@@ -1,5 +1,5 @@
-import { Controller } from '@nestjs/common';
-import { NotesService } from './notes.service';
+import { Controller, Get, Param } from '@nestjs/common';
+import { Note, NotesService } from './notes.service';
 
 interface createNoteDto {
     title: string;
@@ -9,4 +9,15 @@ interface createNoteDto {
 @Controller('notes')
 export class NotesController {
     constructor(private notesService: NotesService) {}
+
+    @Get()
+    getNotes(): Note[] {
+     return this.notesService.getNotes();
+    }
+    
+    @Get(':id')
+    getNote(@Param('id') id: number): Note {
+        return this.notesService.getNote(id);
+    }
+
 }
